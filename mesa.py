@@ -8,8 +8,13 @@ class Mesa:
         self.blind = fichaBase*0.1
         self.aposta = self.blind
         self.dealer = 0
+        self.fichaBase= fichaBase
 
 
+    def iniciaRodada(self):
+        self.verificaPerdedores()
+        if(self.getQuantidadeJogadores()>4):
+            self.decideDealer()
 
     def aumentaValorMesa(self, valor):
         self.valorMesa += valor
@@ -17,13 +22,13 @@ class Mesa:
     def limpaMesa(self):
         self.valorMesa = 0
         self.aposta = self.blind
+
+    def finalizaRodada(self):
         self.rodadas +=1
         self.decideDealer()
-        if not(self.rodadas==1):
-            self.dealer+=1
 
-    def adcionaJogador(self, nome, pote):
-        self.jogadores.append([nome, pote])
+    def adcionaJogador(self, nome):
+        self.jogadores.append([nome, self.fichaBase])
 
     def removeJogador(self, idJogador):
         self.jogadores.pop(idJogador)
@@ -77,20 +82,20 @@ class Mesa:
         else:
             return False
 
-    def verificaPerdedores(self):
+    def verificaPerdedores(self):                   #ok
         for x in range(self.getQuantidadeJogadores()):
-            if(self.jogadores[x][1]<=0):
-                self.removeJogador(x)
-                print(f"{self.jogadores[x][0]} saiu do jogo!")
+            if(self.jogadores[x-1][1]<=0):
+                print(f"{self.jogadores[x-1][0]} saiu do jogo!")
+                self.removeJogador(x-1)
 
-    def mostraValoresMesa(self):
+    def mostraValoresMesa(self):                    #ok
         print('****************************************')
         print()
         print(f"Valor de apostas na mesa:   {self.valorMesa}")
         print()
         print('****************************************\n')
 
-    def mostraJogadores(self):
+    def mostraJogadores(self):                      #ok
         print('****************************************')
         print()
         for i in range(len(self.jogadores)):
@@ -101,42 +106,38 @@ class Mesa:
             print()
         print('****************************************\n')
 
-    def mostraMesa(self):
+    def mostraMesa(self):                           #ok
         self.mostraJogadores()
         print('\n     //////////////////////////////\n')
         self.mostraValoresMesa()
         print('\n\n')
 
-    def getQuantidadeJogadores(self):
+    def getQuantidadeJogadores(self):               #ok
         return len(self.jogadores)
 
-    def getNomeJogador(self, idJogador):
+    def getNomeJogador(self, idJogador):            #ok
         return self.jogadores[idJogador][0]
 
-    def getFichasJogador(self, idJogador):
+    def getFichasJogador(self, idJogador):          #ok
         return self.jogadores[idJogador][1]
 
-    def mostrarAposta(self):
+    def mostrarAposta(self):                        #ok
         print('-----------------------')
         print(f"Valor a pagar: {self.aposta}")
         print('-----------------------')
 
 
-""" if __name__ == "__main__":
+if __name__ == "__main__":
     m1 = Mesa(100)
-    #print(m1.valorMesa)
-    #m1.aumentaValorMesa(50)
-    #print(m1.valorMesa)
-    m1.limpaMesa()
-    #print(m1.valorMesa)
-    #m1.mostraValoresMesa()
-    m1.adcionaJogador("João Otávio", 100)
-    m1.adcionaJogador("Buiu", 100)
-    #m1.mostraJogadores()
-    m1.fazAposta(1, 50)
-    m1.mostraValoresMesa()
-    m1.ganhaAposta(0)
-    m1.mostraMesa()
-    # m1.defineOrdemAleatoria()
-    # m1.mostraMesa()
- """
+    m1.adcionaJogador('jao')
+    m1.adcionaJogador('p')
+    m1.adcionaJogador('a')
+    m1.adcionaJogador('d')
+    m1.adcionaJogador('f')
+    m1.mostraJogadores()
+    m1.iniciaRodada()
+    m1.jogadores[2][1] = 0
+    m1.verificaPerdedores()
+    m1.mostraJogadores()
+    print(m1.getNomeJogador(2))
+    print(m1.dealer)
