@@ -3,7 +3,8 @@
 Desenvolvimento de um jogo de terminal, de poker via python
 
 
-objetivos atuais:
+Objetivos atuais:
+
 ✓ - Criar um baralho
 ✓ - Criar uma Mesa de apostas
 □ - Criar sistema de mãos, onde serão distribuidas as cartas
