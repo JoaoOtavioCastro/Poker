@@ -9,34 +9,24 @@ class Mesa:
         self.aposta = self.blind
         self.dealer = 0
         self.fichaBase= fichaBase
-
-
     def iniciaRodada(self):
         self.verificaPerdedores()
-        if(self.getQuantidadeJogadores()>4):
-            self.decideDealer()
-
+        self.fazApostaMinima()
+        self.mostraJogadores()
     def aumentaValorMesa(self, valor):
         self.valorMesa += valor
-
     def limpaMesa(self):
         self.valorMesa = 0
         self.aposta = self.blind
-
     def finalizaRodada(self):
         self.rodadas +=1
-        self.decideDealer()
-
     def adcionaJogador(self, nome):
         self.jogadores.append([nome, self.fichaBase])
-
     def removeJogador(self, idJogador):
         self.jogadores.pop(idJogador)
-
     def defineOrdemAleatoria(self):
         for i in range(random.randint(1, 10)):
             random.shuffle(self.jogadores)
-
     def fazAposta(self, idJogador, valor):
         if(self.apostaValida):
             self.aposta = valor
@@ -45,57 +35,41 @@ class Mesa:
             return True
         else:
             return False
-
     def ganhaAposta(self, idJogador):
         self.jogadores[idJogador][1] += self.valorMesa
         self.limpaMesa()
-
     def aumentaAposta(self, quantidade):
-        self.aposta += quantidade
-
+        self.aposta = quantidade
     def aumentaBlind(self):
         if self.rodadas%5 == 0:
             self.blind += self.blind
-
     def fazApostaMinima(self):
         smallBlind = int(self.blind / 2)
-        if(self.dealer+2>len(self.jogadores)):
-            if(self.dealer+1>len(self.jogadores)):
-                self.fazAposta(0, smallBlind)
-                self.fazAposta(1, self.blind)
-            else:
-                self.fazAposta(self.dealer+1, smallBlind)
-                self.fazAposta(0, self.blind)
-        else:
-            self.fazAposta(self.dealer+1, smallBlind)
-            self.fazAposta(self.dealer+2, self.blind)
-
+        self.fazAposta(self.dealer, self.blind)
+        self.decideDealer()
+        self.fazAposta(self.dealer, smallBlind)
     def decideDealer(self):
-        if(self.dealer+1>len(self.jogadores)):
+        if(self.dealer==len(self.jogadores)-1):
             self.dealer = 0
         else:
             self.dealer += 1
-
     def apostaValida(self, aposta):
         if(aposta == self.aposta) or (aposta >= self.aposta*2):
             return True
         else:
             return False
-
-    def verificaPerdedores(self):                   #ok
+    def verificaPerdedores(self):                   
         for x in range(self.getQuantidadeJogadores()):
             if(self.jogadores[x-1][1]<=0):
                 print(f"{self.jogadores[x-1][0]} saiu do jogo!")
                 self.removeJogador(x-1)
-
-    def mostraValoresMesa(self):                    #ok
+    def mostraValoresMesa(self):                    
         print('****************************************')
         print()
         print(f"Valor de apostas na mesa:   {self.valorMesa}")
         print()
         print('****************************************\n')
-
-    def mostraJogadores(self):                      #ok
+    def mostraJogadores(self):                      
         print('****************************************')
         print()
         for i in range(len(self.jogadores)):
@@ -105,39 +79,18 @@ class Mesa:
             print(f"  Quantidade de fichas    -   {self.jogadores[i][1]}")
             print()
         print('****************************************\n')
-
-    def mostraMesa(self):                           #ok
+    def mostraMesa(self):      
         self.mostraJogadores()
         print('\n     //////////////////////////////\n')
         self.mostraValoresMesa()
         print('\n\n')
-
-    def getQuantidadeJogadores(self):               #ok
+    def getQuantidadeJogadores(self):               
         return len(self.jogadores)
-
-    def getNomeJogador(self, idJogador):            #ok
+    def getNomeJogador(self, idJogador):            
         return self.jogadores[idJogador][0]
-
-    def getFichasJogador(self, idJogador):          #ok
+    def getFichasJogador(self, idJogador):          
         return self.jogadores[idJogador][1]
-
-    def mostrarAposta(self):                        #ok
+    def mostrarAposta(self):                        
         print('-----------------------')
         print(f"Valor a pagar: {self.aposta}")
         print('-----------------------')
-
-
-if __name__ == "__main__":
-    m1 = Mesa(100)
-    m1.adcionaJogador('jao')
-    m1.adcionaJogador('p')
-    m1.adcionaJogador('a')
-    m1.adcionaJogador('d')
-    m1.adcionaJogador('f')
-    m1.mostraJogadores()
-    m1.iniciaRodada()
-    m1.jogadores[2][1] = 0
-    m1.verificaPerdedores()
-    m1.mostraJogadores()
-    print(m1.getNomeJogador(2))
-    print(m1.dealer)
