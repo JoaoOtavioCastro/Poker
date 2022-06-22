@@ -1,5 +1,6 @@
-from operator import truediv
+from cartas import Baralho
 import random
+
 class Mesa:
     def __init__(self, fichaBase) -> None:
         self.valorMesa = 0
@@ -9,6 +10,9 @@ class Mesa:
         self.aposta = self.blind
         self.dealer = 0
         self.fichaBase= fichaBase
+        self.monte = Baralho()
+        self.cartas = []
+
     def iniciaRodada(self):
         self.verificaPerdedores()
         self.fazApostaMinima()
@@ -21,7 +25,7 @@ class Mesa:
     def finalizaRodada(self):
         self.rodadas +=1
     def adcionaJogador(self, nome):
-        self.jogadores.append([nome, self.fichaBase])
+        self.jogadores.append([nome, self.fichaBase, self.monte.pegaCarta(), self.monte.pegaCarta()])
     def removeJogador(self, idJogador):
         self.jogadores.pop(idJogador)
     def defineOrdemAleatoria(self):
@@ -69,6 +73,14 @@ class Mesa:
         print(f"Valor de apostas na mesa:   {self.valorMesa}")
         print()
         print('****************************************\n')
+    def mostraMao(self, idJogador):                    
+        print('****************************************')
+        print()
+        print(f"Mão do Jogador:   {self.getNomeJogador(idJogador)}")
+        print(self.jogadores[idJogador][2])
+        print(self.jogadores[idJogador][3])
+        print()
+        print('****************************************\n')
     def mostraJogadores(self):                      
         print('****************************************')
         print()
@@ -94,3 +106,32 @@ class Mesa:
         print('-----------------------')
         print(f"Valor a pagar: {self.aposta}")
         print('-----------------------')
+    def pegaCarta(self):
+        return self.monte.pegaCarta()
+    def voltaBaralho(self):
+        self.monte.voltaBaralho()
+    def embaralhar(self):
+        self.monte.embaralhar()
+    def devolveCartas(self, idJogador, quantidade):
+        for i in range(quantidade):
+            if idJogador<len(self.getQuantidadeJogadores):  
+                x =tuple(self.jogadores[idJogador][len(self.jogadores[idJogador]-i)])
+                self.monte.voltaCarta(x)
+                self.jogadores[idJogador][len(self.jogadores[idJogador]-i)] = []
+            else:
+                x = tuple(self.cartas[i])
+                self.monte.voltaCarta(x)
+                self.cartas.pop()
+
+if __name__ == "__main__":
+    m1 = Mesa(100)#ok
+    m1.embaralhar()
+    m1.adcionaJogador('jao')
+    m1.adcionaJogador('p')
+    m1.adcionaJogador('a')
+    m1.adcionaJogador('d')
+    m1.adcionaJogador('f')#ok
+    m1.mostraJogadores()#ok
+    m1.iniciaRodada()#ok
+    m1.mostraMao(2)
+    
