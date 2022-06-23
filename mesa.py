@@ -132,7 +132,10 @@ class Mesa:
         print(self.jogadores[idJogador][3][5])
         print()
         print('  -----------------------------------\n')
-
+    def mostraMaosTodos(self):
+        for i in range(len(self.jogadores)):
+            self.mostraJogador(i)
+        self.mostraMaoMesa()
     def adcionaCartaMesa(self, qtd):
         for i in range(qtd):
             self.cartas.append(self.monte.pegaCarta())
@@ -148,14 +151,14 @@ class Mesa:
         print('  -----------------------------------\n')
 
 if __name__ == "__main__":
-    m1 = Mesa(100)#ok
+    m1 = Mesa(100)
     m1.embaralhar()
     m1.adcionaJogador('jao')
     m1.adcionaJogador('p')
     m1.adcionaJogador('a')
     m1.adcionaJogador('d')
-    m1.adcionaJogador('f')#ok
-    m1.mostraJogadores()#ok
-    m1.iniciaRodada()#ok
+    m1.adcionaJogador('f')
+    m1.mostraJogadores()
+    m1.iniciaRodada()
     m1.mostraMao(2)
     

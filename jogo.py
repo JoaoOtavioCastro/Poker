@@ -35,12 +35,21 @@ while(con):
     limpaTela()
     mesa.iniciaRodada()
     while(y):
-        if(aumentaCont==0):
+        if(contador==0):
             rodar +=1
+        limpaTela()
+        print(f"---  Vez do Jogador   -   {mesa.getNomeJogador(contador)}  ---")
+        for i in range(0, 100000000, 5):
+            print(end='')
+            if(i%10000000==0):
+                print()
+                print(i/10000000,' ', end='')
+        limpaTela()
+        mesa.mostraMaoMesa()
         mesa.mostrarAposta()
         mesa.mostraJogador(contador)
         print(f"{mesa.getNomeJogador(contador)} Voce deseja: ")
-        print('0 - PARAR | 1- APOSTAR | 2-AUMENTAR | 3- PASSAR | 4- Vez do Monte')
+        print('0 - PARAR | 1- APOSTAR | 2-AUMENTAR | 3- PASSAR | 4- Vez da Mesa')
         x = int(input(' '))
         if(contador==mesa.dealer+1 and rodar ==1):
                 mesa.aumentaAposta(mesa.aposta*2)
@@ -69,6 +78,8 @@ while(con):
             mesa.mostraMaoMesa()
         else:
             print('Lê direito ai!')
+    limpaTela()
+    mesa.mostraMaosTodos()
     ganhador = int(input('Informe o ID do Ganhador: '))
     mesa.ganhaAposta(ganhador)
     mesa.finalizaRodada()
