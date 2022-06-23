@@ -17,6 +17,7 @@ class Mesa:
         self.verificaPerdedores()
         self.fazApostaMinima()
         self.mostraJogadores()
+        self.monte.embaralhar()
     def aumentaValorMesa(self, valor):
         self.valorMesa += valor
     def limpaMesa(self):
@@ -122,6 +123,29 @@ class Mesa:
                 x = tuple(self.cartas[i])
                 self.monte.voltaCarta(x)
                 self.cartas.pop()
+    def mostraJogador(self, idJogador):
+        print('  -----------------------------------\n')
+        print(f"  Jogador              -   {self.jogadores[idJogador][0]}")
+        print(f"  Quantidade de fichas    -   {self.jogadores[idJogador][1]}")
+        print()
+        print(self.jogadores[idJogador][2][5])
+        print(self.jogadores[idJogador][3][5])
+        print()
+        print('  -----------------------------------\n')
+
+    def adcionaCartaMesa(self, qtd):
+        for i in range(qtd):
+            self.cartas.append(self.monte.pegaCarta())
+    
+    def mostraMaoMesa(self):
+        print('\n  -----------------------------------\n')
+        print(f"  MESA")
+        print(f"  Quantidade de fichas    -   {self.valorMesa}")
+        print()
+        for i in range(len(self.cartas)):
+            print(self.cartas[i][5])
+        print()
+        print('  -----------------------------------\n')
 
 if __name__ == "__main__":
     m1 = Mesa(100)#ok
